@@ -20,8 +20,9 @@ public class RunRules extends Statement {
         statement.evaluate();
     }
 
-    private static Statement applyAll(Statement result, Iterable<TestRule> rules,
+    private static Statement applyAll(Statement base, Iterable<TestRule> rules,
             Description description) {
+        Statement result = base;
         for (TestRule each : rules) {
             result = each.apply(result, description);
         }
