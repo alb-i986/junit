@@ -7,6 +7,12 @@ import org.junit.runner.Runner;
 import org.junit.runners.model.RunnerBuilder;
 
 public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
+    private static final JUnit4Builder JUNIT4_BUILDER = new JUnit4Builder();
+    private static final JUnit3Builder JUNIT3_BUILDER = new JUnit3Builder();
+    private static final IgnoredBuilder IGNORED_BUILDER = new IgnoredBuilder();
+    private static final SuiteMethodBuilder SUITE_METHOD_BUILDER = new SuiteMethodBuilder();
+    private static final NullBuilder NULL_BUILDER = new NullBuilder();
+
     private final boolean canUseSuiteMethod;
 
     public AllDefaultPossibilitiesBuilder(boolean canUseSuiteMethod) {
@@ -32,11 +38,11 @@ public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
     }
 
     protected JUnit4Builder junit4Builder() {
-        return new JUnit4Builder();
+        return JUNIT4_BUILDER;
     }
 
     protected JUnit3Builder junit3Builder() {
-        return new JUnit3Builder();
+        return JUNIT3_BUILDER;
     }
 
     protected AnnotatedBuilder annotatedBuilder() {
@@ -44,13 +50,13 @@ public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
     }
 
     protected IgnoredBuilder ignoredBuilder() {
-        return new IgnoredBuilder();
+        return IGNORED_BUILDER;
     }
 
     protected RunnerBuilder suiteMethodBuilder() {
         if (canUseSuiteMethod) {
-            return new SuiteMethodBuilder();
+            return SUITE_METHOD_BUILDER;
         }
-        return new NullBuilder();
+        return NULL_BUILDER;
     }
 }
