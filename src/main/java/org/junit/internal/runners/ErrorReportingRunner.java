@@ -82,6 +82,5 @@ public class ErrorReportingRunner extends Runner {
         Description description = describeCause(child);
         notifier.fireTestStarted(description);
         notifier.fireTestFailure(new Failure(description, child));
-        notifier.fireTestFinished(description);
     }
 }

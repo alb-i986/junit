@@ -93,7 +93,7 @@ public final class MultiCategoryTest {
     @Test
     public void inheritanceAllAny() {//all included, any excluded
         Result testResult= JUnitCore.runClasses(InheritanceAllAny.class);
-        assertThat("unexpected run count", testResult.getRunCount(), is(equalTo(1)));
+        assertThat("unexpected run count", testResult.getRunCount(), is(equalTo(0)));
         assertThat("unexpected failure count", testResult.getFailureCount(), is(equalTo(1)));
         assertThat("unexpected failure count", testResult.getIgnoreCount(), is(equalTo(0)));
         assertFalse(testResult.wasSuccessful());

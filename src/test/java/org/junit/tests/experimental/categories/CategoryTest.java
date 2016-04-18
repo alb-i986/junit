@@ -237,7 +237,7 @@ public class CategoryTest {
     @Test
     public void ifNoTestsToRunUseErrorRunner() {
         Result result = JUnitCore.runClasses(OneFastSuite.class);
-        assertEquals(1, result.getRunCount());
+        assertEquals(0, result.getRunCount());
         assertEquals(1, result.getFailureCount());
         assertFalse(result.wasSuccessful());
     }
@@ -440,7 +440,7 @@ public class CategoryTest {
     public void ignoredTest() {// behaves same as Suite
         Result result= JUnitCore.runClasses(IgnoredTestCategoriesSuite.class);
         assertFalse(result.wasSuccessful());
-        assertThat(result.getRunCount(), is(1));
+        assertThat(result.getRunCount(), is(0));
         assertThat(result.getFailureCount(), is(1));
         assertThat(result.getIgnoreCount(), is(1));
     }
