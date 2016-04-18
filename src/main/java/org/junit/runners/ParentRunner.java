@@ -51,6 +51,15 @@ import org.junit.validator.TestClassValidator;
  * {@code @BeforeClass} and {@code @AfterClass} methods,
  * handle annotated {@link ClassRule}s, create a composite
  * {@link Description}, and run children sequentially.
+ * <p>
+ * <h3>Implementation details</h3>
+ * In the constructor, it validates the test class. See {@link #collectInitializationErrors(List)}.
+ *
+ * <h2>Hooks</h2>
+ * {@link #isIgnored(Object)} Override to define "ignored test".
+ *
+ * {@link #classBlock(RunNotifier)} Override to add pre-/post-processing
+ *
  *
  * @param <T> the type of the children of this Runner.
  *           For {@link BlockJUnit4ClassRunner}, {@code T} is {@link Method}.
