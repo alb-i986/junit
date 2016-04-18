@@ -6,9 +6,9 @@ import org.junit.runners.model.RunnerBuilder;
 
 public class SuiteMethodBuilder extends RunnerBuilder {
     @Override
-    public Runner runnerForClass(Class<?> each) throws Throwable {
-        if (hasSuiteMethod(each)) {
-            return new SuiteMethod(each);
+    public Runner runnerForClass(Class<?> testClass) throws Throwable {
+        if (hasSuiteMethod(testClass)) {
+            return new SuiteMethod(testClass);
         }
         return null;
     }
