@@ -1,7 +1,7 @@
 package org.junit.internal.runners;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.runner.Description;
@@ -71,7 +71,7 @@ public class ErrorReportingRunner extends Runner {
             return ((org.junit.internal.runners.InitializationError) cause)
                     .getCauses();
         }
-        return Arrays.asList(cause);
+        return Collections.singletonList(cause);
     }
 
     private Description describeCause(Throwable child) {
