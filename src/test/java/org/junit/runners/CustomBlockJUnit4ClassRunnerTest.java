@@ -42,7 +42,7 @@ public class CustomBlockJUnit4ClassRunnerTest {
 
 	/**
 	 * Custom extension of {@link BlockJUnit4ClassRunner} that always throws
-	 * an exception from the {@code methodBlock()} if a test method is named
+	 * an exception from the {@code childStatementWithRules()} if a test method is named
 	 * exactly {@code "throwException"}.
 	 */
 	private static class CustomBlockJUnit4ClassRunner extends BlockJUnit4ClassRunner {
