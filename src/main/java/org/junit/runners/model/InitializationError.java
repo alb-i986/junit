@@ -23,7 +23,17 @@ public class InitializationError extends Exception {
      * errors {@code errors} as causes
      */
     public InitializationError(List<Throwable> errors) {
+        super(createMessage(errors));
         this.fErrors = errors;
+    }
+
+    private static String createMessage(List<Throwable> errors) {
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+        for (Throwable error : errors) {
+            sb.append("\n\t" + i++ + ". " + error.getMessage());
+        }
+        return sb.toString();
     }
 
     public InitializationError(Throwable error) {
