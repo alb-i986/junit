@@ -1,6 +1,8 @@
 package org.junit.internal.runners.statements;
 
 import org.junit.internal.AssumptionViolatedException;
+import org.junit.internal.runners.model.ExpectedNotThrownException;
+import org.junit.internal.runners.model.UnexpectedException;
 import org.junit.runners.model.Statement;
 
 public class ExpectException extends Statement {
@@ -22,14 +24,14 @@ public class ExpectException extends Statement {
             throw e;
         } catch (Throwable e) {
             if (!expected.isAssignableFrom(e.getClass())) {
-                String message = "Unexpected exception, expected<"
-                        + expected.getName() + "> but was<"
+                String message = "Unexpected exception: expected <"
+                        + expected.getName() + "> but was <"
                         + e.getClass().getName() + ">";
-                throw new Exception(message, e);
+                throw new UnexpectedException(message, e);
             }
         }
         if (complete) {
-            throw new AssertionError("Expected exception: "
+            throw new ExpectedNotThrownException("Expected exception: "
                     + expected.getName());
         }
     }
