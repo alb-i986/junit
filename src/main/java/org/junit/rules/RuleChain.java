@@ -67,6 +67,23 @@ public class RuleChain implements TestRule {
         return emptyRuleChain().around(outerRule);
     }
 
+    /**
+     * Provides a Builder API allowing for less boilerplate.
+     * <p>
+     * Example of usage:
+     * <pre>
+     * TestRule rule = RuleChain.builder()
+     *     .append(outerRule)
+     *     .append(enclosedRule)
+     *     .build();
+     * </pre>
+     *
+     * @since 4.13
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
     private RuleChain(List<TestRule> rules) {
         this.rulesStartingWithInnerMost = rules;
     }
@@ -90,5 +107,25 @@ public class RuleChain implements TestRule {
      */
     public Statement apply(Statement base, Description description) {
         return new RunRules(base, rulesStartingWithInnerMost, description);
+    }
+
+    /**
+     * A Builder API allowing for less boilerplate.
+     *
+     * @since 4.13
+     */
+    public static class Builder {
+        private RuleChain ruleChain = RuleChain.emptyRuleChain();
+
+        private Builder() {}
+
+        public Builder append(TestRule enclosedRule) {
+            ruleChain = ruleChain.around(enclosedRule);
+            return this;
+        }
+
+        public RuleChain build() {
+            return ruleChain;
+        }
     }
 }
