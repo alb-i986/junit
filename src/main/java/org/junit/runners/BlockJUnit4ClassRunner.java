@@ -1,13 +1,5 @@
 package org.junit.runners;
 
-import static org.junit.internal.runners.rules.RuleMemberValidator.RULE_METHOD_VALIDATOR;
-import static org.junit.internal.runners.rules.RuleMemberValidator.RULE_VALIDATOR;
-
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -31,6 +23,14 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
 
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.internal.runners.rules.RuleMemberValidator.RULE_METHOD_VALIDATOR;
+import static org.junit.internal.runners.rules.RuleMemberValidator.RULE_VALIDATOR;
+
 /**
  * Implements the JUnit 4 standard test case class model, as defined by the
  * annotations in the org.junit package. Many users will never notice this
@@ -52,6 +52,12 @@ import org.junit.runners.model.Statement;
  * In turn, in 2009 we introduced {@link Rule}s.  In many cases where extending
  * BlockJUnit4ClassRunner was necessary to add new behavior, {@link Rule}s can
  * be used, which makes the extension more reusable and composable.
+ *
+ * <h3>Hooks</h3>
+ * <ul>
+ *     <li>{@link #isIgnored(FrameworkMethod)}</li>
+ *     <li>{@link #computeTestMethods()}</li>
+ * </ul>
  *
  * @since 4.5
  */

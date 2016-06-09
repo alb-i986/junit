@@ -1,18 +1,5 @@
 package org.junit.runners;
 
-import static org.junit.internal.runners.rules.RuleMemberValidator.CLASS_RULE_METHOD_VALIDATOR;
-import static org.junit.internal.runners.rules.RuleMemberValidator.CLASS_RULE_VALIDATOR;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -42,6 +29,19 @@ import org.junit.validator.AnnotationsValidator;
 import org.junit.validator.PublicClassValidator;
 import org.junit.validator.TestClassValidator;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.internal.runners.rules.RuleMemberValidator.CLASS_RULE_METHOD_VALIDATOR;
+import static org.junit.internal.runners.rules.RuleMemberValidator.CLASS_RULE_VALIDATOR;
+
 /**
  * Provides most of the functionality specific to a Runner that implements a
  * "parent node" in the test tree, with children defined by objects of some data
@@ -64,6 +64,15 @@ import org.junit.validator.TestClassValidator;
  * @param <T> the type of the children of this Runner.
  *           For {@link BlockJUnit4ClassRunner}, {@code T} is {@link Method}.
  *           For {@link Suite}, {@code T} is {@link Class}.
+ *
+ * Hooks:
+ * <ul>
+ *     <li>{@link #isIgnored(Object)} customize the concept of "ignored test".
+ *     Here, no test is ignored.
+ *     {@link BlockJUnit4ClassRunner}, for example, overrides this method to
+ *     filter tests based on the {@link Ignore} annotation.</li>
+ *     <li>{@link #collectInitializationErrors(List)} validates the test class</li>
+ * </ul>
  *
  * @since 4.5
  */
@@ -244,8 +253,7 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
     }
 
     /**
-     * Returns a {@link Statement}: apply all
-     * static fields assignable to {@link TestRule}
+     * Returns a {@link Statement}: apply all static fields and methods assignable to {@link TestRule}
      * annotated with {@link ClassRule}.
      *
      * @param statement the base statement
@@ -282,17 +290,6 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
         };
     }
 
-    /**
-     * Evaluates whether a child is ignored. The default implementation always
-     * returns <code>false</code>.
-     * 
-     * <p>{@link BlockJUnit4ClassRunner}, for example, overrides this method to
-     * filter tests based on the {@link Ignore} annotation.
-     */
-    protected boolean isIgnored(T child) {
-        return false;
-    }
-
     private void runChildren(final RunNotifier notifier) {
         final RunnerScheduler currentScheduler = scheduler;
         try {
@@ -306,6 +303,17 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
         } finally {
             currentScheduler.finished();
         }
+    }
+
+    /**
+     * Evaluates whether a child is ignored. The default implementation always
+     * returns <code>false</code>.
+     *
+     * <p>{@link BlockJUnit4ClassRunner}, for example, overrides this method to
+     * filter tests based on the {@link Ignore} annotation.
+     */
+    protected boolean isIgnored(T child) {
+        return false;
     }
 
     /**

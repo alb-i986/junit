@@ -1,12 +1,5 @@
 package org.junit.tests.running.classes;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Assert;
@@ -28,6 +21,13 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerScheduler;
 import org.junit.tests.experimental.rules.RuleMemberValidatorTest.TestWithNonStaticClassRule;
 import org.junit.tests.experimental.rules.RuleMemberValidatorTest.TestWithProtectedClassRule;
+
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class ParentRunnerTest {
     public static String log = "";
@@ -149,7 +149,8 @@ public class ParentRunnerTest {
         JUnitCore junitCore = new JUnitCore();
         Request request = Request.aClass(klass);
         Result result = junitCore.run(request);
-        assertThat(result.getFailureCount(), is(2)); //the second failure is no runnable methods
+        assertThat(result.getFailureCount(), is(1)); //the second failure is no runnable methods
+        assertThat(result.getRunCount(), is(0));
         assertThat(result.getFailures().get(0).getMessage(),
                 is(equalTo(message)));
     }
@@ -264,6 +265,22 @@ public class ParentRunnerTest {
         @Override
         public void testIgnored(Description description) throws Exception {
             testIgnored++;
+        }
+    }
+
+    @Test
+    public void givenNonStaticClassRuleThenFailureCountShouldBeJust1() {
+        JUnitCore junitCore = new JUnitCore();
+        Request request = Request.aClass(TestWithNonStaticClassRule.class);
+        Result result = junitCore.run(request);
+        assertThat(result.getFailureCount(), is(2)); //the second failure is no runnable methods
+        assertThat(result.getRunCount(), is(0));
+    }
+
+    public static class MyTestClass {
+        @Test
+        public void asd() {
+
         }
     }
 }
